@@ -230,6 +230,15 @@ main h2::before {
     padding-top: 3px;
 }
 
+.cv-note {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 18px 0 0;
+}
+
+.cv-list + .cv-group { margin-top: 28px; }
+
 .cv-group {
     font-family: var(--mono);
     font-size: 0.9rem;
