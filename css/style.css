@@ -1,26 +1,92 @@
-/* General */
+/* ============================================================
+   Fonts: JetBrains Mono for headings, nav and dates (keeps the
+   site's character); Source Serif for body text (easier to read).
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap");
+
+/* ============================================================
+   Colour tokens (light)
+   ============================================================ */
+:root {
+    --accent: #d62828;          /* your red, slightly deeper */
+    --accent-soft: #fbe9e9;
+    --link: #1d4ed8;
+    --text: #1a1a1a;
+    --muted: #5f6368;
+    --bg: #f6f4ef;              /* warm paper */
+    --grid: rgba(0, 0, 0, 0.045);
+    --card: rgba(255, 255, 255, 0.92);
+    --border: #e4e0d8;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --serif: "Source Serif 4", Georgia, serif;
+}
+
+/* Colour tokens (dark) — same class your theme.js toggles */
+body.dark-mode {
+    --accent: #ff5f5f;
+    --accent-soft: rgba(255, 95, 95, 0.12);
+    --link: #7fb2ff;
+    --text: #e8e8e8;
+    --muted: #a0a4ab;
+    --bg: #101214;
+    --grid: rgba(255, 255, 255, 0.05);
+    --card: rgba(24, 26, 29, 0.92);
+    --border: #2a2d31;
+}
+
+/* ============================================================
+   General + graph-paper background
+   ============================================================ */
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
-    font-family: "JetBrains Mono", monospace;
-    line-height: 1.6;
-    color: #000000;
-    background-color: #ffffff;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--text);
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-attachment: fixed;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-/* Header */
+h1, h2, h3 {
+    font-family: var(--mono);
+    line-height: 1.3;
+}
 
+a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+/* ============================================================
+   Header
+   ============================================================ */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 60px;
-    border-bottom: 2px solid #ff0000;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    padding: 18px 48px;
+    background: var(--card);
+    border-bottom: 2px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(6px);
 }
 
 header h1 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
 }
 
 .header-right {
@@ -29,15 +95,26 @@ header h1 {
     gap: 20px;
 }
 
-nav a {
-    margin-left: 25px;
-    text-decoration: none;
-    color: #ff0000;
-    font-weight: 500;
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
 }
 
-nav a:hover {
-    color: #ff0000;
+nav a {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+}
+
+nav a:hover,
+nav a.active {
+    text-decoration: none;
+    border-bottom-color: var(--accent);
 }
 
 #theme-toggle {
@@ -56,90 +133,246 @@ nav a:hover {
     display: block;
 }
 
-/* Main content */
 
+/* ============================================================
+   Main content sits on a "paper" card above the grid
+   ============================================================ */
 main {
-    max-width: 1000px;
-    margin: 60px auto;
-    padding: 0 20px;
+    max-width: 880px;
+    margin: 48px auto;
+    padding: 40px 48px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.06);
 }
 
+/* Home page intro */
 .intro {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 44px;
 }
 
 .profile-image img {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     object-fit: cover;
+    border: 4px solid var(--card);
+    box-shadow: 0 0 0 2px var(--accent);
 }
 
-.profile-text {
-    flex: 1;
-}
-
+.profile-text { flex: 1; }
+.profile-text h1 { margin: 0 0 4px; }
 .profile-text h2 {
-    margin-top: 0;
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 1.1rem;
 }
 
-/* Footer */
+/* ============================================================
+   Section headings (all pages)
+   ============================================================ */
+main section + section { margin-top: 40px; }
 
+main h2 {
+    font-size: 1.15rem;
+    margin: 0 0 16px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+main h2::before {
+    content: "§ ";
+    color: var(--accent);
+}
+
+/* ============================================================
+   Compact CV list (Academics page)
+   One line per entry: title + details on the left, date on the right
+   ============================================================ */
+.cv-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cv-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 20px;
+    padding: 8px 0 8px 14px;
+    border-left: 2px solid var(--border);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.cv-list li:hover {
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.cv-title { font-weight: 600; }
+
+.cv-meta {
+    grid-column: 1;
+    color: var(--muted);
+    font-size: 0.93rem;
+}
+
+.cv-date {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 3px;
+}
+
+.cv-group {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin: 0 0 6px;
+}
+
+/* Small tag, e.g. "Invited", "Online" */
+.tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 1px 7px;
+    margin-left: 6px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    vertical-align: 2px;
+    white-space: nowrap;
+}
+
+/* Collapsible "earlier" blocks */
+details {
+    margin-top: 10px;
+}
+
+details > summary {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+    padding: 4px 0;
+}
+
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "+ "; }
+details[open] > summary::before { content: "− "; }
+
+/* Tabs (Academics page): one section visible at a time */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 28px;
+}
+
+.tab {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.tab[aria-selected="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.tab:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+}
+
+/* Without JavaScript all sections stay visible; with it, only the chosen one */
+.tabs-ready .tab-panel { margin-top: 0; }
+.tabs-ready .tab-panel:not([hidden]) { animation: pop-in 0.25s ease-out; }
+.tab-panel[hidden] { display: none; }
+
+@keyframes pop-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabs-ready .tab-panel:not([hidden]) { animation: none; }
+}
+
+/* Offset anchor jumps for the sticky header */
+section[id] { scroll-margin-top: 90px; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
 footer {
     text-align: center;
-    padding: 25px;
-    width: 70%;
-    margin: 80px auto 0;
-    border-top: 2px solid #ff0000;
+    padding: 24px 16px;
+    max-width: 880px;
+    margin: 0 auto 40px;
+    border-top: 2px solid var(--accent);
     font-size: 0.9rem;
+    color: var(--muted);
 }
 
-footer a {
-    color: #ff0000;
-    text-decoration: none;
-}
+footer a { color: var(--accent); }
 
-footer a:hover {
-    text-decoration: underline;
-}
+/* ============================================================
+   Mobile
+   ============================================================ */
+@media (max-width: 700px) {
+    header {
+        padding: 14px 16px;
+        justify-content: center;
+        text-align: center;
+    }
 
-/* Dark Mode */
+    header h1 { font-size: 1.15rem; }
 
-body.dark-mode {
-    color: #f0f0f0;
-    background-color: #121212;
-}
+    .header-right {
+        width: 100%;
+        justify-content: center;
+    }
 
-body.dark-mode header {
-    border-bottom: 2px solid #ff5555;
-}
+    nav { justify-content: center; gap: 4px 14px; }
+    nav a { font-size: 0.85rem; }
 
-body.dark-mode nav a {
-    color: #ff5555;
-}
+    main {
+        margin: 16px 12px;
+        padding: 24px 18px;
+        border-radius: 10px;
+    }
 
-body.dark-mode nav a:hover {
-    color: #6ea8ff;
-}
+    .intro {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
 
-body.dark-mode footer {
-    border-top: 2px solid #ff5555;
-}
+    .profile-image img { width: 160px; height: 160px; }
 
-body.dark-mode footer a {
-    color: #6ea8ff;
-}
+    /* Date drops under the title on narrow screens */
+    .cv-list li { grid-template-columns: 1fr; }
+    .cv-date { grid-column: 1; grid-row: auto; padding-top: 0; }
 
-body.dark-mode footer a:hover {
-    text-decoration: underline;
-}
-
-body.dark-mode a {
-    color: #6ea8ff;
-}
-
-body.dark-mode a:hover {
-    color: #8fc4ff;
+    footer { margin: 0 12px 24px; }
 }
