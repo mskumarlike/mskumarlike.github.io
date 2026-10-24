@@ -21,7 +21,7 @@ async function loadPost() {
         const heading = postContent.querySelector("h1");
 
         if (heading) {
-            document.title = `${heading.textContent} | T. R. Harikrishnan`;
+            document.title = `${heading.textContent} | Sureshkumar Mariappan`;
         }
         if (window.MathJax) {
             await MathJax.startup.promise;
